@@ -1,0 +1,637 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Telegram Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #000000 url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1920&q=80') center center / cover no-repeat fixed;
+            color: #ffffff;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0;
+            padding-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Логотип и заголовок */
+        .header {
+            text-align: center;
+            padding: 20px 15px 15px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 8px;
+            border-radius: 50%;
+            filter: drop-shadow(0 0 15px rgba(0, 123, 255, 0.6));
+        }
+
+        .tagline {
+            font-size: 12px;
+            color: #b0b8c8;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Карусель */
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            touch-action: pan-y;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .carousel-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            touch-action: pan-y;
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .carousel-item.prev {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: transparent;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-drag: none;
+            -webkit-touch-callout: none;
+        }
+
+        .carousel-prev,
+        .carousel-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 123, 255, 0.3);
+            border: 2px solid #007bff;
+            color: #ffffff;
+            font-size: 30px;
+            padding: 10px 15px;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
+        }
+
+        .carousel-prev {
+            left: 10px;
+        }
+
+        .carousel-next {
+            right: 10px;
+        }
+
+        .carousel-prev:hover,
+        .carousel-next:hover {
+            background: rgba(0, 123, 255, 0.5);
+            box-shadow: 0 0 30px rgba(0, 123, 255, 0.8);
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .carousel-dot.active {
+            background: #007bff;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.8);
+        }
+
+        /* Категории */
+        .categories {
+            padding: 0 15px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .category-btn {
+            background: rgba(15, 20, 35, 0.8);
+            border: 2px solid #007bff;
+            border-radius: 15px;
+            padding: 25px 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.3);
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffffff;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+        }
+
+        .bots-section {
+            padding: 0 15px;
+        }
+
+        .bots-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .bot-btn {
+            background: rgba(15, 20, 35, 0.8);
+            border: 2px solid #007bff;
+            border-radius: 15px;
+            padding: 25px 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.3);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .bot-btn:hover {
+            background: rgba(15, 20, 35, 1);
+            box-shadow: 0 0 30px rgba(0, 123, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .bot-btn:active {
+            transform: translateY(0);
+        }
+
+        .bot-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 5px;
+        }
+
+        .bot-title {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        .category-btn:hover {
+            background: rgba(15, 20, 35, 1);
+            box-shadow: 0 0 30px rgba(0, 123, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .category-btn:active {
+            transform: translateY(0);
+        }
+
+        .category-icon {
+            font-size: 40px;
+            filter: drop-shadow(0 0 10px rgba(0, 123, 255, 0.5));
+        }
+
+        .category-title {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        /* Дисклеймер */
+        .disclaimer {
+            background: rgba(15, 20, 35, 0.6);
+            border: 1px solid rgba(0, 123, 255, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 15px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #b0b8c8;
+        }
+
+        .disclaimer p {
+            margin-bottom: 10px;
+        }
+
+        .disclaimer strong {
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .disclaimer .copyright {
+            margin-top: 15px;
+            text-align: center;
+            color: #007bff;
+            font-weight: 600;
+        }
+
+        /* Кнопка создания */
+        .create-app {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .create-btn {
+            background: linear-gradient(135deg, #00ff88 0%, #00cc66 100%);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.6),
+                        0 0 40px rgba(0, 255, 136, 0.4);
+            position: relative;
+        }
+
+        .create-btn:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.8),
+                        0 0 50px rgba(0, 255, 136, 0.6),
+                        0 0 70px rgba(0, 255, 136, 0.4);
+            transform: scale(1.1);
+        }
+
+        .create-btn:active {
+            transform: scale(0.95);
+        }
+
+        .create-icon {
+            font-size: 32px;
+            font-weight: 300;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 1),
+                        0 0 20px rgba(0, 255, 136, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Главная страница -->
+        <div id="mainPage">
+            <!-- Кнопки категорий -->
+            <main class="categories">
+                <div class="category-grid">
+                    <button class="category-btn" data-category="search">
+                        <span class="category-icon">🔍</span>
+                        <span class="category-title">Боты поисковики (пробив)</span>
+                    </button>
+
+                    <button class="category-btn" data-category="vpn">
+                        <span class="category-icon">🛡️</span>
+                        <span class="category-title">Бесплатный VPN</span>
+                    </button>
+
+                    <button class="category-btn" data-category="movies">
+                        <span class="category-icon">🎬</span>
+                        <span class="category-title">Киноботы</span>
+                    </button>
+
+                    <button class="category-btn" data-category="builders">
+                        <span class="category-icon">🛠️</span>
+                        <span class="category-title">Конструкторы ботов</span>
+                    </button>
+
+                    <button class="category-btn" data-category="other">
+                        <span class="category-icon">🤖</span>
+                        <span class="category-title">Прочие боты</span>
+                    </button>
+
+                    <button class="category-btn" data-category="ads">
+                        <span class="category-icon">📢</span>
+                        <span class="category-title">Рекламные боты</span>
+                    </button>
+                </div>
+            </main>
+
+            <!-- Дисклеймер -->
+            <footer class="disclaimer">
+                <p><strong>Важно!</strong></p>
+                <p>Представленные в данном приложении Telegram-боты не являются собственностью нашей компании.</p>
+                <p>Мы не являемся их разработчиками и не управляем их работой.</p>
+                <p>Все боты, размещённые здесь, являются публично доступными решениями, находящимися в открытом доступе.
+Наша компания предоставляет их исключительно в качестве удобного каталога для пользователей.</p>
+                <p class="copyright">{OYX} © 2025 г.</p>
+            </footer>
+
+            <!-- Кнопка создания miniapp -->
+            <div class="create-app">
+                <button class="create-btn" id="createBtn" data-action="create">
+                    <span class="create-icon">+</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Страница с ботами -->
+        <div id="botsPage" style="display: none;">
+            <div class="page-title">🔍 Боты поисковики</div>
+
+            <main class="bots-section">
+                <div class="bots-grid">
+                    <a href="https://t.me/Fanstatr0t0bot?start=0101C2633E7101000000" class="bot-btn">
+                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner7.jpg" alt="Fanstat" class="bot-image">
+                        <span class="bot-title">Fanstat</span>
+                    </a>
+
+                    <a href="https://t.me/HimeraSearch9kNBot?start=994270689" class="bot-btn">
+                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/photo_2025-11-21_02-42-59.jpg" alt="Himera" class="bot-image">
+                        <span class="bot-title">Himera</span>
+                    </a>
+
+                    <a href="https://Vektor.ink?start=r_ExMSg2pDD3" class="bot-btn" target="_blank">
+                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner1.jpg" alt="Vektor" class="bot-image">
+                        <span class="bot-title">Vektor</span>
+                    </a>
+
+                    <a href="https://t.me/Detectivr0bot" class="bot-btn">
+                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner2.jpg" alt="Detectiv" class="bot-image">
+                        <span class="bot-title">Detectiv</span>
+                    </a>
+
+                    <a href="https://t.me/Zelenka_Lzt_Bot?start=I82M3H7M" class="bot-btn">
+                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner6.jpg" alt="Enigma" class="bot-image">
+                        <span class="bot-title">Enigma</span>
+                    </a>
+
+                    <a href="https://t.me/WierlockBot?start=_ref_e0kJAx_HtOWkk" class="bot-btn">
+                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner5.jpg" alt="Sherlock" class="bot-image">
+                        <span class="bot-title">Sherlock</span>
+                    </a>
+                </div>
+            </main>
+
+            <footer class="disclaimer">
+                <p><strong>Важно!</strong></p>
+                <p>Представленные в данном приложении Telegram-боты не являются собственностью нашей компании.</p>
+                <p>Мы не являемся их разработчиками и не управляем их работой.</p>
+                <p>Все боты, размещённые здесь, являются публично доступными решениями, находящимися в открытом доступе.
+Наша компания предоставляет их исключительно в качестве удобного каталога для пользователей.</p>
+                <p class="copyright">{OYX} © 2025 г.</p>
+            </footer>
+
+            <div class="create-app">
+                <button class="create-btn" id="createBtn2">
+                    <span class="create-icon">+</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Функции карусели (объявляем глобально для onclick)
+        let currentSlide = 0;
+        let autoSlide;
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+        
+        function moveCarousel(direction) {
+            const slides = document.querySelectorAll('.carousel-item');
+            const totalSlides = slides.length;
+            const prevSlide = currentSlide;
+            
+            slides.forEach(slide => {
+                slide.classList.remove('active', 'prev');
+            });
+            document.querySelectorAll('.carousel-dot').forEach(dot => dot.classList.remove('active'));
+            
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            
+            if (direction > 0) {
+                slides[prevSlide].classList.add('prev');
+            }
+            
+            slides[currentSlide].classList.add('active');
+            document.querySelectorAll('.carousel-dot')[currentSlide].classList.add('active');
+        }
+        
+        function goToSlide(n) {
+            const slides = document.querySelectorAll('.carousel-item');
+            const totalSlides = slides.length;
+            
+            slides.forEach(slide => {
+                slide.classList.remove('active', 'prev');
+            });
+            document.querySelectorAll('.carousel-dot').forEach(dot => dot.classList.remove('active'));
+            
+            currentSlide = n;
+            slides[currentSlide].classList.add('active');
+            document.querySelectorAll('.carousel-dot')[currentSlide].classList.add('active');
+        }
+
+        // Инициализация после полной загрузки DOM
+        window.addEventListener('DOMContentLoaded', function() {
+            // Инициализация Telegram Web App
+            const tg = window.Telegram.WebApp;
+            tg.ready();
+            tg.expand();
+
+            // Карусель
+            const slides = document.querySelectorAll('.carousel-item');
+            const totalSlides = slides.length;
+            const carousel = document.querySelector('.carousel');
+            const carouselInner = document.querySelector('.carousel-inner');
+
+            // Создание точек только если карусель существует
+            if (carouselInner && totalSlides > 0) {
+                const dotsContainer = document.querySelector('.carousel-dots');
+                for (let i = 0; i < totalSlides; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                    dot.onclick = () => goToSlide(i);
+                    dotsContainer.appendChild(dot);
+                }
+
+                // Обработчики свайпа для карусели
+                carouselInner.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    isDragging = true;
+                    clearInterval(autoSlide);
+                }, { passive: false });
+
+                carouselInner.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    currentX = e.touches[0].clientX;
+                    const diffX = startX - currentX;
+                    if (Math.abs(diffX) > 10) {
+                        e.preventDefault();
+                    }
+                }, { passive: false });
+
+                carouselInner.addEventListener('touchend', (e) => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    
+                    const diffX = startX - currentX;
+                    
+                    if (Math.abs(diffX) > 30) {
+                        if (diffX > 0) {
+                            moveCarousel(1);
+                        } else {
+                            moveCarousel(-1);
+                        }
+                    }
+                    
+                    setTimeout(() => {
+                        autoSlide = setInterval(() => moveCarousel(1), 5000);
+                    }, 2000);
+                }, { passive: false });
+
+                // Автоматическая прокрутка с задержкой 2 секунды после загрузки
+                setTimeout(() => {
+                    autoSlide = setInterval(() => moveCarousel(1), 5000);
+                }, 2000);
+
+                // Обработчик кликов по баннерам
+                slides.forEach(slide => {
+                    slide.addEventListener('click', () => {
+                        const link = slide.dataset.link;
+                        if (link) {
+                            tg.openLink(link);
+                        }
+                    });
+                });
+            }
+
+            // Обработчики кнопок
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    console.log('Кнопка нажата:', btn);
+                    const category = btn.getAttribute('data-category');
+                    console.log('Категория:', category);
+                    
+                    if (category === 'search') {
+                        const mainPage = document.getElementById('mainPage');
+                        const botsPage = document.getElementById('botsPage');
+                        console.log('mainPage:', mainPage);
+                        console.log('botsPage:', botsPage);
+                        
+                        mainPage.style.display = 'none';
+                        botsPage.style.display = 'block';
+                        tg.MainButton.setText('Назад');
+                        console.log('Страница переключена');
+                    } else {
+                        tg.showAlert('Эта категория скоро появится!');
+                    }
+                });
+            });
+
+            const createBtn = document.getElementById('createBtn');
+            createBtn.addEventListener('click', () => {
+                tg.showAlert('Свяжитесь с нами для создания вашего Mini App! 🚀');
+            });
+
+            const createBtn2 = document.getElementById('createBtn2');
+            createBtn2.addEventListener('click', () => {
+                tg.showAlert('Свяжитесь с нами для создания вашего Mini App! 🚀');
+            });
+
+            tg.MainButton.setText('Главная');
+            tg.MainButton.onClick(() => {
+                const mainPage = document.getElementById('mainPage');
+                const botsPage = document.getElementById('botsPage');
+                
+                if (botsPage.style.display !== 'none') {
+                    botsPage.style.display = 'none';
+                    mainPage.style.display = 'block';
+                    tg.MainButton.setText('Главная');
+                } else {
+                    tg.showAlert('Вы на главной странице');
+                }
+            });
+            tg.MainButton.show();
+
+            console.log('Telegram Mini App инициализировано');
+        });
+    </script>
+</body>
+</html>
+
+
+
