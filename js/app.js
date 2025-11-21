@@ -6,84 +6,68 @@ tg.expand();
 // Карусель
 let currentSlide = 0;
 let carouselInterval;
-let touchStartX = 0;
-let touchEndX = 0;
 
+// Инициализация карусели
 function initCarousel() {
-    const slides = document.querySelectorAll('.carousel-item');
-    const dotsContainer = document.querySelector('.carousel-dots');
-    const carousel = document.querySelector('.carousel');
-    
-    if (slides.length === 0) return;
-    
-    // Создание точек
-    slides.forEach((_, index) => {
-        const dot = document.createElement('div');
-        dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
-        dot.onclick = () => goToSlide(index);
-        dotsContainer.appendChild(dot);
-    });
-    
-    // Кнопки навигации
+    const slides = document.querySelectorAll('.carousel-slide');
+    const indicatorsContainer = document.getElementById('carouselIndicators');
     const prevBtn = document.getElementById('carouselPrev');
     const nextBtn = document.getElementById('carouselNext');
     
-    if (prevBtn) {
-        prevBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const prevSlide = currentSlide - 1;
-            goToSlide(prevSlide < 0 ? slides.length - 1 : prevSlide);
-        });
-    }
+    if (slides.length === 0) return;
     
-    if (nextBtn) {
-        nextBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            goToSlide((currentSlide + 1) % slides.length);
-        });
-    }
+    // Показываем первый слайд
+    slides[0].classList.add('active');
     
-    // Автоматическая смена слайдов
+    // Создаем индикаторы
+    slides.forEach((_, index) => {
+        const indicator = document.createElement('div');
+        indicator.classList.add('carousel-indicator');
+        if (index === 0) indicator.classList.add('active');
+        indicator.addEventListener('click', () => goToSlide(index));
+        indicatorsContainer.appendChild(indicator);
+    });
+    
+    // Обработчики кнопок
+    prevBtn.addEventListener('click', () => {
+        const prevIndex = currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
+        goToSlide(prevIndex);
+    });
+    
+    nextBtn.addEventListener('click', () => {
+        const nextIndex = (currentSlide + 1) % slides.length;
+        goToSlide(nextIndex);
+    });
+    
+    // Автопрокрутка
     carouselInterval = setInterval(() => {
-        goToSlide((currentSlide + 1) % slides.length);
+        const nextIndex = (currentSlide + 1) % slides.length;
+        goToSlide(nextIndex);
     }, 4000);
 }
 
 function goToSlide(index) {
-    const slides = document.querySelectorAll('.carousel-item');
-    const dots = document.querySelectorAll('.carousel-dot');
+    const slides = document.querySelectorAll('.carousel-slide');
+    const indicators = document.querySelectorAll('.carousel-indicator');
     
     if (slides.length === 0) return;
     
-    // Убираем все классы
-    slides.forEach(slide => {
-        slide.classList.remove('active', 'prev');
-    });
+    // Убираем активный класс
+    slides[currentSlide].classList.remove('active');
+    indicators[currentSlide].classList.remove('active');
     
-    if (dots.length > 0 && dots[currentSlide]) {
-        dots[currentSlide].classList.remove('active');
-    }
-    
-    // Определяем направление
-    const oldSlide = currentSlide;
+    // Обновляем индекс
     currentSlide = index;
     
-    // Применяем новые классы с эффектом сдвига
-    if (oldSlide !== currentSlide) {
-        slides[oldSlide].classList.add('prev');
-    }
+    // Добавляем активный класс
     slides[currentSlide].classList.add('active');
+    indicators[currentSlide].classList.add('active');
     
-    if (dots.length > 0 && dots[currentSlide]) {
-        dots[currentSlide].classList.add('active');
-    }
-    
-    // Сброс таймера автопрокрутки
+    // Сброс таймера
     clearInterval(carouselInterval);
     carouselInterval = setInterval(() => {
-        goToSlide((currentSlide + 1) % slides.length);
+        const nextIndex = (currentSlide + 1) % slides.length;
+        goToSlide(nextIndex);
     }, 4000);
 }
 
@@ -206,8 +190,7 @@ window.addEventListener('DOMContentLoaded', function() {
     const contactBtn = document.getElementById('contactBtn');
     if (contactBtn) {
         contactBtn.addEventListener('click', () => {
-            const contactUsername = 'akniyet155'; // Замените на ваш username
-            tg.openTelegramLink(`https://t.me/${contactUsername}`);
+            tg.openTelegramLink('https://t.me/Giolikong');
         });
     }
 

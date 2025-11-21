@@ -18,46 +18,73 @@
         <div id="mainPage">
             <!-- Логотип -->
             <header class="header">
-                <img src="https://raw.githubusercontent.com/akniyet155/logo/main/logo1.jpg" alt="OYX Logo" class="logo" onerror="this.style.display='none'">
+                <img src="https://raw.githubusercontent.com/akniyet155/logo/main/logoyx.jpg" alt="OYX Logo" class="logo" onerror="this.style.display='none'">
                 <p class="tagline">Полезные боты Telegram</p>
             </header>
 
+            <!-- Ссылки на канал и чат -->
+            <div class="social-links">
+                <a href="https://t.me/+WtzB08L1PfNlMTli" class="social-link" id="channelLink">
+                    <span class="social-text">Наш канал</span>
+                </a>
+                <a href="https://t.me/+k3BXrQfjioAzNjQy" class="social-link" id="chatLink">
+                    <span class="social-text">Наш чат</span>
+                </a>
+            </div>
+
+            <!-- Разделитель -->
+            <div class="divider"></div>
+
             <!-- Карусель баннеров -->
             <div class="carousel">
-                <button class="carousel-btn carousel-prev" id="carouselPrev">‹</button>
-                <button class="carousel-btn carousel-next" id="carouselNext">›</button>
-                <div class="carousel-inner">
-                    <a href="https://t.me/Fanstatr0t0bot?start=0101C2633E7101000000" class="carousel-item active">
-                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner7.jpg" alt="Funstat Bot" loading="lazy">
-                        <span class="carousel-title">Funstat Bot</span>
-                    </a>
+                <div class="carousel-track">
+                    <div class="carousel-slide">
+                        <a href="https://t.me/Fanstatr0t0bot?start=0101C2633E7101000000" class="carousel-link">
+                            <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner7.jpg" alt="Funstat Bot" loading="lazy">
+                            <span class="carousel-title">Funstat Bot</span>
+                        </a>
+                    </div>
 
-                    <a href="https://t.me/HimeraSearch9kNBot?start=994270689" class="carousel-item">
-                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/photo_2025-11-21_02-42-59.jpg" alt="Himera Bot" loading="lazy">
-                        <span class="carousel-title">Himera Bot</span>
-                    </a>
+                    <div class="carousel-slide">
+                        <a href="https://t.me/HimeraSearch9kNBot?start=994270689" class="carousel-link">
+                            <img src="https://raw.githubusercontent.com/akniyet155/image1/main/photo_2025-11-21_02-42-59.jpg" alt="Himera Bot" loading="lazy">
+                            <span class="carousel-title">Himera Bot</span>
+                        </a>
+                    </div>
 
-                    <a href="https://Vektor.ink?start=r_ExMSg2pDD3" class="carousel-item" target="_blank">
-                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner1.jpg" alt="Vektor Bot" loading="lazy">
-                        <span class="carousel-title">Vektor Bot</span>
-                    </a>
+                    <div class="carousel-slide">
+                        <a href="https://Vektor.ink?start=r_ExMSg2pDD3" class="carousel-link" target="_blank">
+                            <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner1.jpg" alt="Vektor Bot" loading="lazy">
+                            <span class="carousel-title">Vektor Bot</span>
+                        </a>
+                    </div>
 
-                    <a href="https://t.me/Detectivr0bot" class="carousel-item">
-                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner2.jpg" alt="Detectiv Bot" loading="lazy">
-                        <span class="carousel-title">Detectiv Bot</span>
-                    </a>
+                    <div class="carousel-slide">
+                        <a href="https://t.me/Detectivr0bot" class="carousel-link">
+                            <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner2.jpg" alt="Detectiv Bot" loading="lazy">
+                            <span class="carousel-title">Detectiv Bot</span>
+                        </a>
+                    </div>
 
-                    <a href="https://t.me/Zelenka_Lzt_Bot?start=I82M3H7M" class="carousel-item">
-                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner6.jpg" alt="Enigma Bot" loading="lazy">
-                        <span class="carousel-title">Enigma Bot</span>
-                    </a>
+                    <div class="carousel-slide">
+                        <a href="https://t.me/Zelenka_Lzt_Bot?start=I82M3H7M" class="carousel-link">
+                            <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner6.jpg" alt="Enigma Bot" loading="lazy">
+                            <span class="carousel-title">Enigma Bot</span>
+                        </a>
+                    </div>
 
-                    <a href="https://t.me/WierlockBot?start=_ref_e0kJAx_HtOWkk" class="carousel-item">
-                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner5.jpg" alt="Sherlock Bot" loading="lazy">
-                        <span class="carousel-title">Sherlock Bot</span>
-                    </a>
+                    <div class="carousel-slide">
+                        <a href="https://t.me/WierlockBot?start=_ref_e0kJAx_HtOWkk" class="carousel-link">
+                            <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner5.jpg" alt="Sherlock Bot" loading="lazy">
+                            <span class="carousel-title">Sherlock Bot</span>
+                        </a>
+                    </div>
                 </div>
-                <div class="carousel-dots"></div>
+                
+                <button class="carousel-nav carousel-prev" id="carouselPrev">‹</button>
+                <button class="carousel-nav carousel-next" id="carouselNext">›</button>
+                
+                <div class="carousel-indicators" id="carouselIndicators"></div>
             </div>
 
             <!-- Кнопки категорий -->
@@ -394,7 +421,7 @@
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                 </svg>
             </span>
-            <span class="menu-label">Связаться</span>
+            <span class="menu-label">Техподдержка</span>
         </button>
     </nav>
 
