@@ -59,11 +59,20 @@ function goToSlide(index) {
     const slides = document.querySelectorAll('.carousel-item');
     const dots = document.querySelectorAll('.carousel-dot');
     
-    slides[currentSlide].classList.remove('active');
+    // Убираем все классы
+    slides.forEach(slide => {
+        slide.classList.remove('active', 'prev');
+    });
     dots[currentSlide].classList.remove('active');
     
+    // Определяем направление
+    const oldSlide = currentSlide;
     currentSlide = index;
     
+    // Применяем новые классы с эффектом сдвига
+    if (oldSlide !== currentSlide) {
+        slides[oldSlide].classList.add('prev');
+    }
     slides[currentSlide].classList.add('active');
     dots[currentSlide].classList.add('active');
     
@@ -112,8 +121,22 @@ window.addEventListener('DOMContentLoaded', function() {
     // Кнопки "Создать Mini App"
     const createButtons = document.querySelectorAll('.create-btn');
     createButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            tg.showAlert('Свяжитесь с нами для создания вашего Mini App! 🚀');
+        const icon = btn.querySelector('.create-icon');
+        const text = btn.querySelector('.create-text');
+        
+        // Клик на иконку - раскрытие/сворачивание
+        icon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            btn.classList.toggle('expanded');
+        });
+        
+        // Клик на текст - действие (здесь можно добавить свою логику)
+        text.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (btn.classList.contains('expanded')) {
+                // Уведомление о том, что раздел скоро будет
+                tg.showAlert('Раздел "Создать зеркало" скоро появится! 🚀');
+            }
         });
     });
 
