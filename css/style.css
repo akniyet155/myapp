@@ -31,7 +31,7 @@ body::before {
     max-width: 600px;
     margin: 0 auto;
     padding: 0;
-    padding-bottom: 180px;
+    padding-bottom: 150px;
     position: relative;
     z-index: 1;
 }
@@ -436,7 +436,7 @@ body::before {
 /* Кнопка создания */
 .create-app {
     position: fixed;
-    bottom: 90px;
+    bottom: 70px;
     right: 20px;
     z-index: 100;
 }
@@ -586,7 +586,7 @@ body::before {
     background: rgba(15, 20, 35, 0.95);
     backdrop-filter: blur(10px);
     border-top: 1px solid rgba(0, 123, 255, 0.3);
-    padding: 12px 20px;
+    padding: 8px 20px;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -602,8 +602,8 @@ body::before {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
-    padding: 8px 15px;
+    gap: 3px;
+    padding: 6px 12px;
     transition: all 0.3s;
     border-radius: 8px;
 }
@@ -618,8 +618,8 @@ body::before {
 }
 
 .menu-icon {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     color: #00d4ff;
     filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.7))
             drop-shadow(0 0 20px rgba(0, 123, 255, 0.5));
@@ -641,7 +641,7 @@ body::before {
 }
 
 .menu-label {
-    font-size: 11px;
+    font-size: 10px;
     color: #b0b8c8;
     font-weight: 500;
 }

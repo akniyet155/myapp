@@ -3,6 +3,9 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
+// Отслеживание текущей страницы для навигации
+let currentPage = 'main';
+
 // Карусель
 let currentSlide = 0;
 let carouselInterval;
@@ -80,7 +83,16 @@ function showPage(pageId) {
     const buildersPage = document.getElementById('buildersPage');
     const otherPage = document.getElementById('otherPage');
     const adsPage = document.getElementById('adsPage');
-    const backArrow = document.getElementById('backArrow');
+    
+    // Сохраняем текущую страницу
+    currentPage = pageId;
+    
+    // Добавляем в историю браузера для поддержки системной кнопки назад
+    if (pageId !== 'main') {
+        window.history.pushState({ page: pageId }, '', `#${pageId}`);
+    } else {
+        window.history.pushState({ page: 'main' }, '', '#');
+    }
     
     // Скрываем все страницы
     mainPage.style.display = 'none';
@@ -94,25 +106,25 @@ function showPage(pageId) {
     // Показываем нужную страницу
     if (pageId === 'bots') {
         botsPage.style.display = 'block';
-        backArrow.classList.add('visible');
+        tg.BackButton.show();
     } else if (pageId === 'vpn') {
         vpnPage.style.display = 'block';
-        backArrow.classList.add('visible');
+        tg.BackButton.show();
     } else if (pageId === 'movies') {
         moviesPage.style.display = 'block';
-        backArrow.classList.add('visible');
+        tg.BackButton.show();
     } else if (pageId === 'builders') {
         buildersPage.style.display = 'block';
-        backArrow.classList.add('visible');
+        tg.BackButton.show();
     } else if (pageId === 'other') {
         otherPage.style.display = 'block';
-        backArrow.classList.add('visible');
+        tg.BackButton.show();
     } else if (pageId === 'ads') {
         adsPage.style.display = 'block';
-        backArrow.classList.add('visible');
+        tg.BackButton.show();
     } else {
         mainPage.style.display = 'block';
-        backArrow.classList.remove('visible');
+        tg.BackButton.hide();
     }
 }
 
@@ -170,13 +182,63 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Кнопка "Назад"
-    const backArrow = document.getElementById('backArrow');
-    if (backArrow) {
-        backArrow.addEventListener('click', () => {
+    // Кнопка "Назад" Telegram
+    tg.BackButton.onClick(() => {
+        showPage('main');
+    });
+    
+    // Обработка системной кнопки "Назад" (Android/iOS)
+    window.addEventListener('popstate', (event) => {
+        if (event.state && event.state.page) {
+            // Переходим на сохраненную страницу без добавления в историю
+            const pageId = event.state.page;
+            currentPage = pageId;
+            
+            const mainPage = document.getElementById('mainPage');
+            const botsPage = document.getElementById('botsPage');
+            const vpnPage = document.getElementById('vpnPage');
+            const moviesPage = document.getElementById('moviesPage');
+            const buildersPage = document.getElementById('buildersPage');
+            const otherPage = document.getElementById('otherPage');
+            const adsPage = document.getElementById('adsPage');
+            
+            // Скрываем все
+            mainPage.style.display = 'none';
+            botsPage.style.display = 'none';
+            vpnPage.style.display = 'none';
+            moviesPage.style.display = 'none';
+            buildersPage.style.display = 'none';
+            otherPage.style.display = 'none';
+            adsPage.style.display = 'none';
+            
+            // Показываем нужную
+            if (pageId === 'bots') {
+                botsPage.style.display = 'block';
+                tg.BackButton.show();
+            } else if (pageId === 'vpn') {
+                vpnPage.style.display = 'block';
+                tg.BackButton.show();
+            } else if (pageId === 'movies') {
+                moviesPage.style.display = 'block';
+                tg.BackButton.show();
+            } else if (pageId === 'builders') {
+                buildersPage.style.display = 'block';
+                tg.BackButton.show();
+            } else if (pageId === 'other') {
+                otherPage.style.display = 'block';
+                tg.BackButton.show();
+            } else if (pageId === 'ads') {
+                adsPage.style.display = 'block';
+                tg.BackButton.show();
+            } else {
+                mainPage.style.display = 'block';
+                tg.BackButton.hide();
+            }
+        } else {
+            // Если нет состояния, возвращаемся на главную
             showPage('main');
-        });
-    }
+        }
+    });
 
     // Обработчики нижнего меню
     const shareBtn = document.getElementById('shareBtn');
@@ -207,6 +269,62 @@ window.addEventListener('DOMContentLoaded', function() {
     if (buyadInfoBtn) {
         buyadInfoBtn.addEventListener('click', () => {
             tg.showAlert('Здесь ты можешь приобрести рекламу с оплатой за показы, которая будет отображаться в наших партнерских ботах.');
+        });
+    }
+
+    // Info button для Funstat Bot
+    const funstatInfoBtn = document.getElementById('funstatInfo');
+    if (funstatInfoBtn) {
+        funstatInfoBtn.addEventListener('click', () => {
+            tg.showAlert('Этο τ℮ⅼełοց | iηƒοsτατ - Бoт ρазвлeқательнoй cтαтиcтики πo т℮легραммγ. Для προcмοтρα инφoρмαции oтπρавь @username/кοнтаkт/id/ссылкγ/cтиқ℮ρ/пост. B базе 1 020 526 976 пользοватeлeй, 51 893 812 чαтοв/каналов и 94 755 004 416 coοбщ℮ний');
+        });
+    }
+
+    // Info button для Himera Bot
+    const himeraInfoBtn = document.getElementById('himeraInfo');
+    if (himeraInfoBtn) {
+        himeraInfoBtn.addEventListener('click', () => {
+            tg.showAlert('Dobro пожаловать в Himera Search! 📞 Поиск по Телефону, 🕵️‍♂️ Поиск по ФИО, 📷 Поиск по Фото, 🔍 Все виды поиска (Email/Паспорт/ИНН/VIN Авто), 📉 Тарифы со скидками, 🤖 Мои боты с 15% комиссией');
+        });
+    }
+
+    // Info button для Vektor Bot
+    const vektorInfoBtn = document.getElementById('vektorInfo');
+    if (vektorInfoBtn) {
+        vektorInfoBtn.addEventListener('click', () => {
+            tg.showAlert('Добро пожаловать в поисковую систему Вектор. Исследуйте безграничные возможности вместе с нами, преобразуя открытые источники в полезные знания для поиска и экспериментов.');
+        });
+    }
+
+    // Info button для Detectiv Bot
+    const detectivInfoBtn = document.getElementById('detectivInfo');
+    if (detectivInfoBtn) {
+        detectivInfoBtn.addEventListener('click', () => {
+            tg.showAlert('👋 Добро пожаловать в наш Телеграм-Бот поиска данных!\n🔸 Бот способен находить социальные сети привязанные к российским номерам и множество дополнительной информации\n\n📱 Введите российский номер формата: +7(911)22-33-444\n📧 Введите Email формата: denis@ya.ru\n🆔 Введите ссылку на ВКонтакте, Instagram, ok.ru, FaceBook');
+        });
+    }
+
+    // Info button для Enigma Bot
+    const enigmaInfoBtn = document.getElementById('enigmaInfo');
+    if (enigmaInfoBtn) {
+        enigmaInfoBtn.addEventListener('click', () => {
+            tg.showAlert('🌟 Добро пожаловать в мир цифровых расследований!\n»»» Я - ваш личный помощник-детектив, объединяющий передовые технологии информационной безопасности и искусство OSINT разведки.\n\n🔍 В моём арсенале:\n• Анализ номеров телефонов и контактных данных\n• Исследование транспортных средств\n• Проверка документов\n• Поиск по базам данных\n\n⚡ Особенности работы:\n• Конфиденциальность каждого запроса\n• Использование только легальных методов\n• Оперативность и точность результатов');
+        });
+    }
+
+    // Info button для Sherlock Bot
+    const sherlockInfoBtn = document.getElementById('sherlockInfo');
+    if (sherlockInfoBtn) {
+        sherlockInfoBtn.addEventListener('click', () => {
+            tg.showAlert('🕵️ «Шерлок». Если информация существует — я её найду.\n\n🕵️ Личность: ФИО\n📲 Контакты: телефон, email\n🚘 Транспорт: номер автомобиля, VIN\n💬 Социальные сети: VK, TikTok, Instagram, OK\n📟 Telegram: логин или ID\n📄 Документы: ВУ, паспорт, СНИЛС, ИНН\n🌐 Онлайн-следы: домен или IP\n🏚 Недвижимость: адрес, кадастровый номер\n🏢 Юр.лицо: ИНН, ОГРН\n📸 Поиск по фото');
+        });
+    }
+
+    // Info button для Пранк бот
+    const prankInfoBtn = document.getElementById('prankInfo');
+    if (prankInfoBtn) {
+        prankInfoBtn.addEventListener('click', () => {
+            tg.showAlert('👋 Добро пожаловать!\n\n💣 SMS Boom (45 ₽) – отправка SMS с кодами от различных сервисов\n📵 PhoneCaLLer (375 ₽) – номер отправляется в 500+ ресурсов с просьбой о звонке\n🎉 Звонок-розыгрыш – разыгрыш заготовленной записью\n📩 Анонимное SMS (45 ₽) – анонимное SMS с вашим текстом\n📞 Анонимный звонок (69 ₽) – конференц-связь между двумя номерами\n📡 Статус абонента (20 ₽) – узнать, в сети ли абонент\n🤍 Белый список (749 ₽) – защита от розыгрышей\n\n🇷🇺 Работает только с номерами РФ (+7)');
         });
     }
 });
