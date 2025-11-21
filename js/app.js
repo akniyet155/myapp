@@ -6,6 +6,28 @@ tg.expand();
 // Отслеживание текущей страницы для навигации
 let currentPage = 'main';
 
+// Функция показа кастомного модального окна
+function showInfoModal(title, text) {
+    const modal = document.getElementById('infoModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    
+    modalTitle.textContent = title;
+    modalText.textContent = text;
+    modal.classList.add('active');
+    
+    // Предотвращаем прокрутку фона
+    document.body.style.overflow = 'hidden';
+}
+
+function closeInfoModal() {
+    const modal = document.getElementById('infoModal');
+    modal.classList.remove('active');
+    
+    // Восстанавливаем прокрутку
+    document.body.style.overflow = '';
+}
+
 // Карусель
 let currentSlide = 0;
 let carouselInterval;
@@ -256,11 +278,27 @@ window.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Закрытие модального окна
+    const closeModalBtn = document.getElementById('closeModal');
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeInfoModal);
+    }
+
+    // Закрытие по клику на фон
+    const infoModal = document.getElementById('infoModal');
+    if (infoModal) {
+        infoModal.addEventListener('click', (e) => {
+            if (e.target === infoModal) {
+                closeInfoModal();
+            }
+        });
+    }
+
     // Info button для SubGram
     const subgramInfoBtn = document.getElementById('subgramInfo');
     if (subgramInfoBtn) {
         subgramInfoBtn.addEventListener('click', () => {
-            tg.showAlert('SubGram — сервис для покупки/продажи мотивированных подписчиков Telegram. Увеличьте охват вашего канала с реальными активными пользователями! 📈');
+            showInfoModal('SubGram', 'SubGram — сервис для покупки/продажи мотивированных подписчиков Telegram. Увеличьте охват вашего канала с реальными активными пользователями! 📈');
         });
     }
 
@@ -268,7 +306,7 @@ window.addEventListener('DOMContentLoaded', function() {
     const buyadInfoBtn = document.getElementById('buyadInfo');
     if (buyadInfoBtn) {
         buyadInfoBtn.addEventListener('click', () => {
-            tg.showAlert('Здесь ты можешь приобрести рекламу с оплатой за показы, которая будет отображаться в наших партнерских ботах.');
+            showInfoModal('BuyAd', 'Здесь ты можешь приобрести рекламу с оплатой за показы, которая будет отображаться в наших партнерских ботах.');
         });
     }
 
@@ -276,7 +314,7 @@ window.addEventListener('DOMContentLoaded', function() {
     const funstatInfoBtn = document.getElementById('funstatInfo');
     if (funstatInfoBtn) {
         funstatInfoBtn.addEventListener('click', () => {
-            tg.showAlert('Этο τ℮ⅼełοց | iηƒοsτατ - Бoт ρазвлeқательнoй cтαтиcтики πo т℮легραммγ. Для προcмοтρα инφoρмαции oтπρавь @username/кοнтаkт/id/ссылкγ/cтиқ℮ρ/пост. B базе 1 020 526 976 пользοватeлeй, 51 893 812 чαтοв/каналов и 94 755 004 416 coοбщ℮ний');
+            showInfoModal('Funstat Bot', 'Этο τ℮ⅼełοց | iηƒοsτατ - Бoт ρазвлeқательнoй cтαтиcтики πo т℮легραммγ. Для προcмοтρα инφoρмαции oтπρавь @username/кοнтаkт/id/ссылкγ/cтиқ℮ρ/пост. B базе 1 020 526 976 пользοватeлeй, 51 893 812 чαтοв/каналов и 94 755 004 416 coοбщ℮ний');
         });
     }
 
@@ -284,7 +322,7 @@ window.addEventListener('DOMContentLoaded', function() {
     const himeraInfoBtn = document.getElementById('himeraInfo');
     if (himeraInfoBtn) {
         himeraInfoBtn.addEventListener('click', () => {
-            tg.showAlert('Dobro пожаловать в Himera Search! 📞 Поиск по Телефону, 🕵️‍♂️ Поиск по ФИО, 📷 Поиск по Фото, 🔍 Все виды поиска (Email/Паспорт/ИНН/VIN Авто), 📉 Тарифы со скидками, 🤖 Мои боты с 15% комиссией');
+            showInfoModal('Himera Bot', 'Dobro пожаловать в Himera Search! 📞 Поиск по Телефону, 🕵️‍♂️ Поиск по ФИО, 📷 Поиск по Фото, 🔍 Все виды поиска (Email/Паспорт/ИНН/VIN Авто), 📉 Тарифы со скидками, 🤖 Мои боты с 15% комиссией');
         });
     }
 
@@ -292,7 +330,7 @@ window.addEventListener('DOMContentLoaded', function() {
     const vektorInfoBtn = document.getElementById('vektorInfo');
     if (vektorInfoBtn) {
         vektorInfoBtn.addEventListener('click', () => {
-            tg.showAlert('Добро пожаловать в поисковую систему Вектор. Исследуйте безграничные возможности вместе с нами, преобразуя открытые источники в полезные знания для поиска и экспериментов.');
+            showInfoModal('Vektor Bot', 'Добро пожаловать в поисковую систему Вектор. Исследуйте безграничные возможности вместе с нами, преобразуя открытые источники в полезные знания для поиска и экспериментов.');
         });
     }
 
@@ -300,7 +338,7 @@ window.addEventListener('DOMContentLoaded', function() {
     const detectivInfoBtn = document.getElementById('detectivInfo');
     if (detectivInfoBtn) {
         detectivInfoBtn.addEventListener('click', () => {
-            tg.showAlert('👋 Добро пожаловать в наш Телеграм-Бот поиска данных!\n🔸 Бот способен находить социальные сети привязанные к российским номерам и множество дополнительной информации\n\n📱 Введите российский номер формата: +7(911)22-33-444\n📧 Введите Email формата: denis@ya.ru\n🆔 Введите ссылку на ВКонтакте, Instagram, ok.ru, FaceBook');
+            showInfoModal('Detectiv Bot', '👋 Добро пожаловать в наш Телеграм-Бот поиска данных!\n🔸 Бот способен находить социальные сети привязанные к российским номерам и множество дополнительной информации\n\n📱 Введите российский номер формата: +7(911)22-33-444\n📧 Введите Email формата: denis@ya.ru\n🆔 Введите ссылку на ВКонтакте, Instagram, ok.ru, FaceBook');
         });
     }
 
@@ -308,7 +346,7 @@ window.addEventListener('DOMContentLoaded', function() {
     const enigmaInfoBtn = document.getElementById('enigmaInfo');
     if (enigmaInfoBtn) {
         enigmaInfoBtn.addEventListener('click', () => {
-            tg.showAlert('🌟 Добро пожаловать в мир цифровых расследований!\n»»» Я - ваш личный помощник-детектив, объединяющий передовые технологии информационной безопасности и искусство OSINT разведки.\n\n🔍 В моём арсенале:\n• Анализ номеров телефонов и контактных данных\n• Исследование транспортных средств\n• Проверка документов\n• Поиск по базам данных\n\n⚡ Особенности работы:\n• Конфиденциальность каждого запроса\n• Использование только легальных методов\n• Оперативность и точность результатов');
+            showInfoModal('Enigma Bot', '🌟 Добро пожаловать в мир цифровых расследований!\n»»» Я - ваш личный помощник-детектив, объединяющий передовые технологии информационной безопасности и искусство OSINT разведки.\n\n🔍 В моём арсенале:\n• Анализ номеров телефонов и контактных данных\n• Исследование транспортных средств\n• Проверка документов\n• Поиск по базам данных\n\n⚡ Особенности работы:\n• Конфиденциальность каждого запроса\n• Использование только легальных методов\n• Оперативность и точность результатов');
         });
     }
 
@@ -316,7 +354,7 @@ window.addEventListener('DOMContentLoaded', function() {
     const sherlockInfoBtn = document.getElementById('sherlockInfo');
     if (sherlockInfoBtn) {
         sherlockInfoBtn.addEventListener('click', () => {
-            tg.showAlert('🕵️ «Шерлок». Если информация существует — я её найду.\n\n🕵️ Личность: ФИО\n📲 Контакты: телефон, email\n🚘 Транспорт: номер автомобиля, VIN\n💬 Социальные сети: VK, TikTok, Instagram, OK\n📟 Telegram: логин или ID\n📄 Документы: ВУ, паспорт, СНИЛС, ИНН\n🌐 Онлайн-следы: домен или IP\n🏚 Недвижимость: адрес, кадастровый номер\n🏢 Юр.лицо: ИНН, ОГРН\n📸 Поиск по фото');
+            showInfoModal('Sherlock Bot', '🕵️ «Шерлок». Если информация существует — я её найду.\n\n🕵️ Личность: ФИО\n📲 Контакты: телефон, email\n🚘 Транспорт: номер автомобиля, VIN\n💬 Социальные сети: VK, TikTok, Instagram, OK\n📟 Telegram: логин или ID\n📄 Документы: ВУ, паспорт, СНИЛС, ИНН\n🌐 Онлайн-следы: домен или IP\n🏚 Недвижимость: адрес, кадастровый номер\n🏢 Юр.лицо: ИНН, ОГРН\n📸 Поиск по фото');
         });
     }
 
@@ -324,7 +362,7 @@ window.addEventListener('DOMContentLoaded', function() {
     const prankInfoBtn = document.getElementById('prankInfo');
     if (prankInfoBtn) {
         prankInfoBtn.addEventListener('click', () => {
-            tg.showAlert('👋 Добро пожаловать!\n\n💣 SMS Boom (45 ₽) – отправка SMS с кодами от различных сервисов\n📵 PhoneCaLLer (375 ₽) – номер отправляется в 500+ ресурсов с просьбой о звонке\n🎉 Звонок-розыгрыш – разыгрыш заготовленной записью\n📩 Анонимное SMS (45 ₽) – анонимное SMS с вашим текстом\n📞 Анонимный звонок (69 ₽) – конференц-связь между двумя номерами\n📡 Статус абонента (20 ₽) – узнать, в сети ли абонент\n🤍 Белый список (749 ₽) – защита от розыгрышей\n\n🇷🇺 Работает только с номерами РФ (+7)');
+            showInfoModal('Пранк бот', '👋 Добро пожаловать!\n\n💣 SMS Boom (45 ₽) – отправка SMS с кодами от различных сервисов\n📵 PhoneCaLLer (375 ₽) – номер отправляется в 500+ ресурсов с просьбой о звонке\n🎉 Звонок-розыгрыш – разыгрыш заготовленной записью\n📩 Анонимное SMS (45 ₽) – анонимное SMS с вашим текстом\n📞 Анонимный звонок (69 ₽) – конференц-связь между двумя номерами\n📡 Статус абонента (20 ₽) – узнать, в сети ли абонент\n🤍 Белый список (749 ₽) – защита от розыгрышей\n\n🇷🇺 Работает только с номерами РФ (+7)');
         });
     }
 });
