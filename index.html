@@ -468,7 +468,16 @@
     const shareBtn = document.getElementById('shareBtn');
     if (shareBtn) {
         shareBtn.onclick = function() {
-            window.open("https://t.me/share/url?url=https://t.me/Vseboty_r0bot&text=🔥 Попробуй этот каталог ботов!", "_blank");
+            const tg = window.Telegram && window.Telegram.WebApp;
+            const shareUrl = "https://t.me/Vseboty_r0bot";
+            const shareText = "🔥 Попробуй этот каталог ботов!";
+            if (tg && typeof tg.shareLink === "function") {
+                tg.shareLink({
+                    url: shareUrl,
+                    text: shareText
+                });
+            }
+            // Вне Telegram ничего не происходит
         };
     }
     </script>
