@@ -25,6 +25,7 @@
                 <a href="https://t.me/+k3BXrQfjioAzNjQy" class="social-link" id="chatLink">
                     <span class="social-text">Наш чат</span>
                 </a>
+                <button class="share-inline-btn" id="customShareBtn" type="button">Поделиться ботом</button>
             </div>
 
             <!-- Разделитель -->
@@ -484,7 +485,22 @@
                     text: shareText
                 });
             }
-            // Вне Telegram ничего не происходит
+        };
+    }
+
+    // Кнопка "Поделиться ботом" рядом с "Наш чат"
+    const customShareBtn = document.getElementById('customShareBtn');
+    if (customShareBtn) {
+        customShareBtn.onclick = function() {
+            const tg = window.Telegram && window.Telegram.WebApp;
+            const shareUrl = "https://t.me/Vseboty_r0bot";
+            const shareText = "🔥 Попробуй этот каталог ботов!";
+            if (tg && typeof tg.shareLink === "function") {
+                tg.shareLink({
+                    url: shareUrl,
+                    text: shareText
+                });
+            }
         };
     }
     </script>
