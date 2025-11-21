@@ -6,10 +6,13 @@ tg.expand();
 // Карусель
 let currentSlide = 0;
 let carouselInterval;
+let touchStartX = 0;
+let touchEndX = 0;
 
 function initCarousel() {
     const slides = document.querySelectorAll('.carousel-item');
     const dotsContainer = document.querySelector('.carousel-dots');
+    const carousel = document.querySelector('.carousel');
     
     if (slides.length === 0) return;
     
@@ -21,10 +24,35 @@ function initCarousel() {
         dotsContainer.appendChild(dot);
     });
     
+    // Свайп для карусели
+    carousel.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    carousel.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+    
     // Автоматическая смена слайдов
     carouselInterval = setInterval(() => {
         goToSlide((currentSlide + 1) % slides.length);
     }, 4000);
+}
+
+function handleSwipe() {
+    const slides = document.querySelectorAll('.carousel-item');
+    const swipeThreshold = 50;
+    
+    if (touchEndX < touchStartX - swipeThreshold) {
+        // Свайп влево - следующий слайд
+        goToSlide((currentSlide + 1) % slides.length);
+    }
+    
+    if (touchEndX > touchStartX + swipeThreshold) {
+        // Свайп вправо - предыдущий слайд
+        goToSlide((currentSlide - 1 + slides.length) % slides.length);
+    }
 }
 
 function goToSlide(index) {
@@ -38,6 +66,12 @@ function goToSlide(index) {
     
     slides[currentSlide].classList.add('active');
     dots[currentSlide].classList.add('active');
+    
+    // Сброс таймера автопрокрутки
+    clearInterval(carouselInterval);
+    carouselInterval = setInterval(() => {
+        goToSlide((currentSlide + 1) % slides.length);
+    }, 4000);
 }
 
 // Навигация между страницами
