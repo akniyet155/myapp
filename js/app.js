@@ -24,15 +24,22 @@ function initCarousel() {
         dotsContainer.appendChild(dot);
     });
     
-    // Свайп для карусели
-    carousel.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-    });
+    // Кнопки навигации
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
     
-    carousel.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    });
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            const prevSlide = currentSlide - 1;
+            goToSlide(prevSlide < 0 ? slides.length - 1 : prevSlide);
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            goToSlide((currentSlide + 1) % slides.length);
+        });
+    }
     
     // Автоматическая смена слайдов
     carouselInterval = setInterval(() => {
@@ -204,10 +211,8 @@ window.addEventListener('DOMContentLoaded', function() {
     const shareBtn = document.getElementById('shareBtn');
     if (shareBtn) {
         shareBtn.addEventListener('click', () => {
-            const appUrl = 'https://akniyet155.github.io/myapp/';
-            const shareText = `Каталог ботов - найди своего помощника!`;
-            
-            tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(appUrl)}&text=${encodeURIComponent(shareText)}`);
+            // Открываем бота к которому привязано приложение
+            tg.openTelegramLink('https://t.me/Vpn_OYXbot');
         });
     }
 
