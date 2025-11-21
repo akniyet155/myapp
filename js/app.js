@@ -59,11 +59,16 @@ function goToSlide(index) {
     const slides = document.querySelectorAll('.carousel-item');
     const dots = document.querySelectorAll('.carousel-dot');
     
+    if (slides.length === 0) return;
+    
     // Убираем все классы
     slides.forEach(slide => {
         slide.classList.remove('active', 'prev');
     });
-    dots[currentSlide].classList.remove('active');
+    
+    if (dots.length > 0 && dots[currentSlide]) {
+        dots[currentSlide].classList.remove('active');
+    }
     
     // Определяем направление
     const oldSlide = currentSlide;
@@ -74,7 +79,10 @@ function goToSlide(index) {
         slides[oldSlide].classList.add('prev');
     }
     slides[currentSlide].classList.add('active');
-    dots[currentSlide].classList.add('active');
+    
+    if (dots.length > 0 && dots[currentSlide]) {
+        dots[currentSlide].classList.add('active');
+    }
     
     // Сброс таймера автопрокрутки
     clearInterval(carouselInterval);
