@@ -25,7 +25,6 @@
                 <a href="https://t.me/+k3BXrQfjioAzNjQy" class="social-link" id="chatLink">
                     <span class="social-text">Наш чат</span>
                 </a>
-                <button class="share-inline-btn" id="customShareBtn" type="button">Поделиться ботом</button>
             </div>
 
             <!-- Разделитель -->
@@ -442,16 +441,6 @@
             </span>
             <span class="menu-label">Техподдержка</span>
         </button>
-        <button class="menu-btn" id="shareBtn">
-            <span class="menu-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/>
-                    <polyline points="16 6 12 2 8 6"/>
-                    <line x1="12" y1="2" x2="12" y2="15"/>
-                </svg>
-            </span>
-            <span class="menu-label">Поделиться</span>
-        </button>
     </nav>
 
     <!-- Модальное окно для Info -->
@@ -470,38 +459,6 @@
     if (tg) {
         tg.ready();
         tg.expand();
-    }
-
-    // Обычная кнопка "Поделиться" в нижнем меню
-    const shareBtn = document.getElementById('shareBtn');
-    if (shareBtn) {
-        shareBtn.onclick = function() {
-            const tg = window.Telegram && window.Telegram.WebApp;
-            const shareUrl = "https://t.me/Vseboty_r0bot";
-            const shareText = "🔥 Попробуй этот каталог ботов!";
-            if (tg && typeof tg.shareLink === "function") {
-                tg.shareLink({
-                    url: shareUrl,
-                    text: shareText
-                });
-            }
-        };
-    }
-
-    // Кнопка "Поделиться ботом" рядом с "Наш чат"
-    const customShareBtn = document.getElementById('customShareBtn');
-    if (customShareBtn) {
-        customShareBtn.onclick = function() {
-            const tg = window.Telegram && window.Telegram.WebApp;
-            const shareUrl = "https://t.me/Vseboty_r0bot";
-            const shareText = "🔥 Попробуй этот каталог ботов!";
-            if (tg && typeof tg.shareLink === "function") {
-                tg.shareLink({
-                    url: shareUrl,
-                    text: shareText
-                });
-            }
-        };
     }
     </script>
 </body>
