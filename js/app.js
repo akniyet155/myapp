@@ -29,14 +29,18 @@ function initCarousel() {
     const nextBtn = document.getElementById('carouselNext');
     
     if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
+        prevBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             const prevSlide = currentSlide - 1;
             goToSlide(prevSlide < 0 ? slides.length - 1 : prevSlide);
         });
     }
     
     if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
+        nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             goToSlide((currentSlide + 1) % slides.length);
         });
     }
@@ -45,23 +49,6 @@ function initCarousel() {
     carouselInterval = setInterval(() => {
         goToSlide((currentSlide + 1) % slides.length);
     }, 4000);
-}
-
-function handleSwipe() {
-    const slides = document.querySelectorAll('.carousel-item');
-    const swipeThreshold = 50;
-    const diff = touchEndX - touchStartX;
-    
-    if (Math.abs(diff) > swipeThreshold) {
-        if (diff < 0) {
-            // Свайп влево - следующий слайд
-            goToSlide((currentSlide + 1) % slides.length);
-        } else {
-            // Свайп вправо - предыдущий слайд
-            const prevSlide = currentSlide - 1;
-            goToSlide(prevSlide < 0 ? slides.length - 1 : prevSlide);
-        }
-    }
 }
 
 function goToSlide(index) {
