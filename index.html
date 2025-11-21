@@ -441,6 +441,16 @@
             </span>
             <span class="menu-label">Техподдержка</span>
         </button>
+        <button class="menu-btn" id="shareBtn">
+            <span class="menu-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/>
+                    <polyline points="16 6 12 2 8 6"/>
+                    <line x1="12" y1="2" x2="12" y2="15"/>
+                </svg>
+            </span>
+            <span class="menu-label">Поделиться</span>
+        </button>
     </nav>
 
     <!-- Модальное окно для Info -->
@@ -454,14 +464,13 @@
 
     <script src="js/app.js"></script>
     <script>
-    const tg = Telegram.WebApp;
-    tg.MainButton.setText("Поделиться");
-    tg.MainButton.onClick(() => {
-        tg.openTelegramLink(
-            "https://t.me/share/url?url=https://t.me/Constrsisbot&text=🔥 Попробуй этот каталог ботов!"
-        );
-    });
-    tg.MainButton.show();
+    // Обычная кнопка "Поделиться" в нижнем меню
+    const shareBtn = document.getElementById('shareBtn');
+    if (shareBtn) {
+        shareBtn.onclick = function() {
+            window.open("https://t.me/share/url?url=https://t.me/Vseboty_r0bot&text=🔥 Попробуй этот каталог ботов!", "_blank");
+        };
+    }
     </script>
 </body>
 </html>
