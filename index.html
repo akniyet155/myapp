@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OYX - Telegram Mini App</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <!-- Кнопка назад -->
+    <button class="back-arrow" id="backArrow">
+        <span class="arrow-icon">←</span>
+    </button>
+
+    <div class="container">
+        <!-- Главная страница -->
+        <div id="mainPage">
+            <!-- Логотип (если добавите) -->
+            <!-- <header class="header">
+                <img src="images/logo.png" alt="OYX Logo" class="logo">
+                <p class="tagline">Каталог Telegram ботов</p>
+            </header> -->
+
+            <!-- Кнопки категорий -->
+            <main class="categories">
+                <div class="category-grid">
+                    <button class="category-btn" data-category="search">
+                        <span class="category-icon">🔍</span>
+                        <span class="category-title">Боты поисковики (пробив)</span>
+                    </button>
+
+                    <button class="category-btn" data-category="vpn">
+                        <span class="category-icon">🛡️</span>
+                        <span class="category-title">Бесплатный VPN</span>
+                    </button>
+
+                    <button class="category-btn" data-category="movies">
+                        <span class="category-icon">🎬</span>
+                        <span class="category-title">Киноботы</span>
+                    </button>
+
+                    <button class="category-btn" data-category="builders">
+                        <span class="category-icon">🛠️</span>
+                        <span class="category-title">Конструкторы ботов</span>
+                    </button>
+
+                    <button class="category-btn" data-category="other">
+                        <span class="category-icon">🤖</span>
+                        <span class="category-title">Прочие боты</span>
+                    </button>
+
+                    <button class="category-btn" data-category="ads">
+                        <span class="category-icon">📢</span>
+                        <span class="category-title">Рекламные боты</span>
+                    </button>
+                </div>
+            </main>
+
+            <!-- Дисклеймер -->
+            <footer class="disclaimer">
+                <p><strong>Важно!</strong></p>
+                <p>Представленные в данном приложении Telegram-боты не являются собственностью нашей компании.</p>
+                <p>Мы не являемся их разработчиками и не управляем их работой.</p>
+                <p>Все боты, размещённые здесь, являются публично доступными решениями, находящимися в открытом доступе.
+Наша компания предоставляет их исключительно в качестве удобного каталога для пользователей.</p>
+                <p class="copyright">{OYX} © 2025 г.</p>
+            </footer>
+
+            <!-- Кнопка создания miniapp -->
+            <div class="create-app">
+                <button class="create-btn" id="createBtn" data-action="create">
+                    <span class="create-icon">+</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Страница с ботами -->
+        <div id="botsPage" style="display: none;">
+            <div class="page-title">🔍 Боты поисковики</div>
+
+            <main class="bots-section">
+                <div class="bots-grid">
+                    <a href="https://t.me/Fanstatr0t0bot?start=0101C2633E7101000000" class="bot-btn">
+                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner7.jpg" alt="Fanstat" class="bot-image">
+                        <span class="bot-title">Fanstat</span>
+                    </a>
+
+                    <a href="https://t.me/HimeraSearch9kNBot?start=994270689" class="bot-btn">
+                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/photo_2025-11-21_02-42-59.jpg" alt="Himera" class="bot-image">
+                        <span class="bot-title">Himera</span>
+                    </a>
+
+                    <a href="https://Vektor.ink?start=r_ExMSg2pDD3" class="bot-btn" target="_blank">
+                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner1.jpg" alt="Vektor" class="bot-image">
+                        <span class="bot-title">Vektor</span>
+                    </a>
+
+                    <a href="https://t.me/Detectivr0bot" class="bot-btn">
+                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner2.jpg" alt="Detectiv" class="bot-image">
+                        <span class="bot-title">Detectiv</span>
+                    </a>
+
+                    <a href="https://t.me/Zelenka_Lzt_Bot?start=I82M3H7M" class="bot-btn">
+                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner6.jpg" alt="Enigma" class="bot-image">
+                        <span class="bot-title">Enigma</span>
+                    </a>
+
+                    <a href="https://t.me/WierlockBot?start=_ref_e0kJAx_HtOWkk" class="bot-btn">
+                        <img src="https://raw.githubusercontent.com/akniyet155/image1/main/banner5.jpg" alt="Sherlock" class="bot-image">
+                        <span class="bot-title">Sherlock</span>
+                    </a>
+                </div>
+            </main>
+
+            <footer class="disclaimer">
+                <p><strong>Важно!</strong></p>
+                <p>Представленные в данном приложении Telegram-боты не являются собственностью нашей компании.</p>
+                <p>Мы не являемся их разработчиками и не управляем их работой.</p>
+                <p>Все боты, размещённые здесь, являются публично доступными решениями, находящимися в открытом доступе.
+Наша компания предоставляет их исключительно в качестве удобного каталога для пользователей.</p>
+                <p class="copyright">{OYX} © 2025 г.</p>
+            </footer>
+
+            <div class="create-app">
+                <button class="create-btn" id="createBtn2">
+                    <span class="create-icon">+</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
+
+
+
