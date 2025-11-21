@@ -6,6 +6,48 @@ tg.expand();
 // Отслеживание текущей страницы для навигации
 let currentPage = 'main';
 
+// Проверка, является ли это зеркалом
+let mirrorConfig = null;
+const urlParams = new URLSearchParams(window.location.search);
+const mirrorId = urlParams.get('mirror');
+
+if (mirrorId) {
+    // Загружаем конфигурацию зеркала
+    const savedMirror = localStorage.getItem('mirror_' + mirrorId);
+    if (savedMirror) {
+        mirrorConfig = JSON.parse(savedMirror);
+        applyMirrorConfig();
+    }
+}
+
+// Применение конфигурации зеркала
+function applyMirrorConfig() {
+    if (!mirrorConfig) return;
+    
+    // Применяем название и описание
+    document.title = mirrorConfig.app.name;
+    const tagline = document.querySelector('.tagline');
+    if (tagline) tagline.textContent = mirrorConfig.app.description;
+    
+    // Применяем логотип
+    const logo = document.querySelector('.logo');
+    if (logo && mirrorConfig.app.logo) logo.src = mirrorConfig.app.logo;
+    
+    // Применяем цвета
+    if (mirrorConfig.design) {
+        document.documentElement.style.setProperty('--primary-color', mirrorConfig.design.primaryColor);
+        document.documentElement.style.setProperty('--accent-color', mirrorConfig.design.accentColor);
+        document.documentElement.style.setProperty('--bg-color', mirrorConfig.design.bgColor);
+        
+        if (mirrorConfig.design.bgImage) {
+            document.body.style.backgroundImage = `url('${mirrorConfig.design.bgImage}')`;
+        }
+    }
+    
+    // TODO: Фильтрация ботов по конфигурации
+    // Это можно реализовать, скрывая ботов, которых нет в mirrorConfig.bots
+}
+
 // Функция показа кастомного модального окна
 function showInfoModal(title, text) {
     const modal = document.getElementById('infoModal');
@@ -266,8 +308,10 @@ window.addEventListener('DOMContentLoaded', function() {
     const shareBtn = document.getElementById('shareBtn');
     if (shareBtn) {
         shareBtn.addEventListener('click', () => {
-            // Открываем бота к которому привязано приложение
-            tg.openTelegramLink('https://t.me/Vpn_OYXbot');
+            tg.shareLink({
+                url: 'https://t.me/Vseboty_r0bot',
+                text: 'Рекомендую! Все боты тут: https://t.me/Vseboty_r0bot'
+            });
         });
     }
 
