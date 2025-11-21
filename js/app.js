@@ -43,15 +43,17 @@ function initCarousel() {
 function handleSwipe() {
     const slides = document.querySelectorAll('.carousel-item');
     const swipeThreshold = 50;
+    const diff = touchEndX - touchStartX;
     
-    if (touchEndX < touchStartX - swipeThreshold) {
-        // Свайп влево - следующий слайд
-        goToSlide((currentSlide + 1) % slides.length);
-    }
-    
-    if (touchEndX > touchStartX + swipeThreshold) {
-        // Свайп вправо - предыдущий слайд
-        goToSlide((currentSlide - 1 + slides.length) % slides.length);
+    if (Math.abs(diff) > swipeThreshold) {
+        if (diff < 0) {
+            // Свайп влево - следующий слайд
+            goToSlide((currentSlide + 1) % slides.length);
+        } else {
+            // Свайп вправо - предыдущий слайд
+            const prevSlide = currentSlide - 1;
+            goToSlide(prevSlide < 0 ? slides.length - 1 : prevSlide);
+        }
     }
 }
 
