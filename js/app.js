@@ -3,6 +3,43 @@ const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 
+// Карусель
+let currentSlide = 0;
+let carouselInterval;
+
+function initCarousel() {
+    const slides = document.querySelectorAll('.carousel-item');
+    const dotsContainer = document.querySelector('.carousel-dots');
+    
+    if (slides.length === 0) return;
+    
+    // Создание точек
+    slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
+        dot.onclick = () => goToSlide(index);
+        dotsContainer.appendChild(dot);
+    });
+    
+    // Автоматическая смена слайдов
+    carouselInterval = setInterval(() => {
+        goToSlide((currentSlide + 1) % slides.length);
+    }, 4000);
+}
+
+function goToSlide(index) {
+    const slides = document.querySelectorAll('.carousel-item');
+    const dots = document.querySelectorAll('.carousel-dot');
+    
+    slides[currentSlide].classList.remove('active');
+    dots[currentSlide].classList.remove('active');
+    
+    currentSlide = index;
+    
+    slides[currentSlide].classList.add('active');
+    dots[currentSlide].classList.add('active');
+}
+
 // Навигация между страницами
 function showPage(pageId) {
     const mainPage = document.getElementById('mainPage');
@@ -22,6 +59,9 @@ function showPage(pageId) {
 
 // Инициализация после загрузки DOM
 window.addEventListener('DOMContentLoaded', function() {
+    // Инициализация карусели
+    initCarousel();
+    
     // Обработчики кнопок категорий
     document.querySelectorAll('.category-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -48,6 +88,25 @@ window.addEventListener('DOMContentLoaded', function() {
     if (backArrow) {
         backArrow.addEventListener('click', () => {
             showPage('main');
+        });
+    }
+
+    // Обработчики нижнего меню
+    const shareBtn = document.getElementById('shareBtn');
+    if (shareBtn) {
+        shareBtn.addEventListener('click', () => {
+            const appUrl = 'https://akniyet155.github.io/myapp/';
+            const shareText = `Каталог ботов - найди своего помощника!`;
+            
+            tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(appUrl)}&text=${encodeURIComponent(shareText)}`);
+        });
+    }
+
+    const contactBtn = document.getElementById('contactBtn');
+    if (contactBtn) {
+        contactBtn.addEventListener('click', () => {
+            const contactUsername = 'akniyet155'; // Замените на ваш username
+            tg.openTelegramLink(`https://t.me/${contactUsername}`);
         });
     }
 });
