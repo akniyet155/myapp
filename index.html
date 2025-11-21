@@ -433,18 +433,6 @@
 
     <!-- Нижнее меню -->
     <nav class="bottom-menu">
-        <button class="menu-btn" id="shareBtn">
-            <span class="menu-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="18" cy="5" r="3"></circle>
-                    <circle cx="6" cy="12" r="3"></circle>
-                    <circle cx="18" cy="19" r="3"></circle>
-                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                </svg>
-            </span>
-            <span class="menu-label">Поделиться</span>
-        </button>
         <button class="menu-btn" id="contactBtn">
             <span class="menu-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -465,6 +453,16 @@
     </div>
 
     <script src="js/app.js"></script>
+    <script>
+    const tg = Telegram.WebApp;
+    tg.MainButton.setText("Поделиться");
+    tg.MainButton.onClick(() => {
+        tg.openTelegramLink(
+            "https://t.me/share/url?url=https://t.me/vseboty_r0bot&text=🔥 Попробуй этот каталог ботов!"
+        );
+    });
+    tg.MainButton.show();
+    </script>
 </body>
 </html>
 
